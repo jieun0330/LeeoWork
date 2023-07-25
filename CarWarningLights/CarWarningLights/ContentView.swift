@@ -17,32 +17,35 @@ struct warningModels {
     let symbolName: String
 }
 
-
-
-extension Color {
-    static let lightOrange = Color("orange")
-}
-//struct tabColorModels {
-//    var tabColor: Color
-//}
-
 struct ModalView: View {
+    
     var body: some View {
-        Text("modal")
+        
+        Text("")
+        
+//        var redLights: [warningModels]
+        
+//        VStack {
+//            redLights[index].symbols
+//                .resizable()
+//                .scaledToFit()
+//                .frame(width: 40, height: 40)
+//            Text(redLights[index].symbolName)
+//        }
     }
 }
 
 
 
+
 struct ContentView: View {
     
-//    @State private var tabColor = Color
-    @State private var showModal = false
+    @State private var showSheet = false
 
     
     var redLights: [warningModels] = [
         warningModels(rectangleColor: .red, symbols: Image(systemName: "exclamationmark.brakesignal"), symbolName: "브레이크 경고등"),
-        warningModels(rectangleColor: .red, symbols: Image(systemName: "minus.plus.batteryblock.exclamationmark"), symbolName: "충전 경고등")
+        warningModels(rectangleColor: .red, symbols: Image(systemName: "minus.plus.batteryblock.exclamationmark"), symbolName: "충전 경고등 테스트")
     ]
     
     var orangeLights: [warningModels] = [
@@ -60,21 +63,9 @@ struct ContentView: View {
         warningModels(rectangleColor: .green, symbols: Image(systemName: "parkinglight"), symbolName: "차폭등 미등 표시등")
     ]
     
-//    let tabColors = [
-//        Color(.red),
-//        Color(.orange),
-//        Color(.blue),
-//        Color(.green)
-//
-//    ]
-    
-//    var tabColors: [tabColorModels] = [
-//        tabColorModels(tabColor: .red)
-//    ]
-    
     var body: some View {
         
-        TabView {
+        TabView() {
             ScrollView {
                 LazyVGrid(columns: [GridItem(),
                                     GridItem()
@@ -82,7 +73,7 @@ struct ContentView: View {
                     ForEach(0..<2) { index in
                         
                         Button(action: {
-                            self.showModal = true
+                            self.showSheet = true
                         }, label: {
                             RoundedRectangle(cornerRadius: 20)
                                 .frame(width: 170, height: 120)
@@ -92,15 +83,20 @@ struct ContentView: View {
                                         redLights[index].symbols
                                             .resizable()
                                             .scaledToFit()
-                                            .frame(width: 30, height: 30)
+                                            .frame(width: 40, height: 40)
                                         Text(redLights[index].symbolName)
+//                                            .foregroundColor(.white)
                                     }
-                                    
+                                        .foregroundColor(.white)
+
                                 )
                             
                         })
-                        .sheet(isPresented: self.$showModal, content: {
-                            ModalView()}
+                        .sheet(isPresented: self.$showSheet, content: {
+                            ModalView()
+                                .presentationDetents([.medium])
+                            
+                        }
                                //
                                
                                
@@ -108,11 +104,19 @@ struct ContentView: View {
                     }
                 })
                           }
-                          }
-            .tabItem({
+            .tabItem {
+//                CustomTabItem(imageName: "exclamationmark.triangle", title: "위험", color: .red)
                     Image(systemName: "exclamationmark.triangle")
+//                    .accentColor(Color.tabRed)
+                    
                     Text("위험")
-            })
+            }
+//            .tint(.red)
+//            .foregroundColor(.red)
+//            .tag()
+//            .accentColor(.red)
+            
+//            .accentColor(Color.tabRed)
             ScrollView {
                 LazyVGrid(columns: [GridItem(),
                                     GridItem()
@@ -122,7 +126,7 @@ struct ContentView: View {
                             .frame(width: 170, height: 120)
                             .foregroundColor(orangeLights[index].rectangleColor)
                             .overlay(
-                                VStack {
+                                VStack() {
                                     orangeLights[index].symbols
                                         .resizable()
                                         .scaledToFit()
@@ -188,6 +192,8 @@ struct ContentView: View {
                     Image(systemName: "exclamationmark.triangle")
                     Text("정상 작동")
                 }).analyticsScreen(name: "\(ContentView.self)")
+                          }
+
         
         }
 
